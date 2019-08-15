@@ -1,0 +1,111 @@
+﻿@model IPagedList<WebApplication1.Domain.Customers>
+@using PagedList
+@using PagedList.Mvc
+
+<head>
+    <style>
+        .active, .li:hover {
+            background-color: #666;
+            color: white;
+        }
+
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #customers tr:hover {
+                background-color: #ddd;
+            }
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #4CAF50;
+                color: white;
+            }
+    </style>
+</head>
+<body>
+    
+    <table id="customers">
+        <tr>
+            <th>CustomerID</th>
+            <th>CompanyName</th>
+            <th>ContactName</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.CustomerID,new { @id="contactId"})
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.CompanyName, new { @style = "width:500px;",@id="CompanyName" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.ContactName,new { @id="ContactName"})
+                </td>
+                <td>
+                    <button class="btn" onclick="update();">
+                        @Html.ActionLink(
+                                    "編輯",
+                                    "Edit",
+                                    "Detail",
+                                    routeValues: new
+                                          {
+                                              id = item.CustomerID
+                                          },
+                                          htmlAttributes: null
+                                      )
+                    </button>
+                    <script>
+
+                    </script>
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CustomerID }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('确定是否删除?')" })
+                </td>
+            </tr>
+        }
+    </table>
+    <nav>
+        <ul class="pagination">
+            @{
+                <li class="page-item "><a class="page-link" href="?page=@(Model.PageNumber-1)">&laquo;</a></li>
+            }
+            @for (int i = 1; i <= 20; i++)
+            {
+                if (Model.PageNumber == i)
+                {
+                    <li class="page-item active"><a class="page-link" href="?page=@i">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+                }
+            }
+            <li class="page-item"><a class="page-link" href="?page=@(Model.PageNumber+1)">&raquo;</a></li>
+        </ul>
+    </nav>
+    @*@Html.PagedListPager((IPagedList)Model,
+        page => Url.Action("Index", new
+        {
+          page = page
+        }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)*@
+</body>

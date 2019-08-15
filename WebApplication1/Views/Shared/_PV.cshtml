@@ -1,0 +1,56 @@
+﻿@model WebApplication1.Domain.Customers
+@using WebApplication1.Domain
+@{
+    ViewBag.Title = "PV";
+}
+
+<h2>PV</h2>
+
+
+@using (Html.BeginForm("Detail", "Detail", FormMethod.Post))
+{
+    <table id="customers">
+        <tr>
+            <th>CustomerID</th>
+            <th>CompanyName</th>
+            <th>ContactName</th>
+            <th>Edit</th>
+        </tr>
+        <tbody id="customers">
+            <tr>
+
+                <td>
+                    @Html.TextBoxFor(modelItem => Model.CustomerID)
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => Model.CompanyName, new { @style = "width:500px;" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => Model.ContactName)
+                </td>
+                <td> <input id="botton1" type="button" value="確認編輯" /></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <p id="status"></p>
+    </div>
+
+}
+<select id="s1">
+    @foreach (var item in (List<Customers>)ViewBag.Customers)
+    {
+        <option value="@item.CustomerID">@item.CompanyName</option>
+    }
+</select>
+
+
+
+<select id="s2">
+    @foreach (var item in (List<SelectListItem>)ViewBag.cage)
+    {
+        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+    }
+</select>

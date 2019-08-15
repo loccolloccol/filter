@@ -1,0 +1,141 @@
+﻿@model WebApplication1.Domain.Customers
+@*@using WebApplication1.Models
+    @using WebApplication1.Controllers*@
+
+@using WebApplication1.Domain
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <style>
+
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #customers tr:hover {
+                background-color: #ddd;
+            }
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #4CAF50;
+                color: white;
+            }
+    </style>
+</head>
+<body>
+    <script>
+        //function clearStatus() {
+        //     $('#status').html('');
+        //}
+        //function update() {
+        //     }
+
+        $(document).ready(function () {
+
+
+            $('#botton1').click(function () {
+                var data = {
+                    CustomerID: $('#CustemorID').val(),
+                    CompanyName: $('#CompanyName').val(),
+                    ContactName: $('#ContactName').val()
+                };
+                $.ajax({
+                    url: "/Detail/Edit",
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    datatype: 'json',
+                    data: JSON.stringify(data),
+                    error: function (xhr) {
+                        alert('錯誤');
+                    },
+                    success: function (response) {
+
+                        if (response.IsSuccess) {
+                            Swal.fire({
+                                type: 'success',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Why do I have this issue?</a>'
+                            }).then(
+                                function () {
+                                    window.location.href = '/';
+                                }
+                            );
+                        }
+                        else {
+                            var message = '';
+                            response.ErrorMessage.forEach(x => {
+                                debugger;
+                                message += '\n' + x;
+                            });
+                            alert(message);
+                        }
+                    }
+                })
+            });
+        });
+        //    clearStatus();
+        //    debugger;
+        //    var id = $('#contactId').val();
+
+        //    var json = JSON.stringify({ name: $("#CompanyName").val(), phone: $("#ContactName").val() });
+
+        //    $.ajax({
+        //        url: "https://localhost:44376/Detail/Edit" + id,
+        //        cache: false,
+        //        type: 'PUT',
+        //        contentType: 'application/json; charset=utf-8',
+        //        data: json,
+        //        success: function () { getAll(); }
+        //    })
+        //        .fail(
+        //            function (xhr, textStatus, err) {
+        //                $('#status').html('Error: ' + err);
+        //            });
+        //}
+        //    $(document).ready(function () {
+        //        getAll();
+        //        });
+        //    function getAll() {
+        //    clearStatus();
+
+        //利用Get方式取得。
+        //$.getJSON("https://localhost:44376/Detail/Edit",
+        //    function (data) {
+        //        $("#customers tr").remove();
+        //        for (i = 0; i < data.length; i++) {
+        //            $("#customers").append("<tr>" +
+        //                "<td>" + data[i].id + "</td>" +
+        //                "<td>" + data[i].CompanynName + "</td>" +
+        //                "<td>" + data[i].ContactName + "</td>" +
+        //                "</tr>");
+        //        }
+        //    })
+        $.ajax({
+            url: "/SelectList/Edit",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            data: JSON.stringify(data)
+        });
+
+        /**/</script>
+   @Html.Partial("_PV")
+    
+</body>
